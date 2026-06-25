@@ -1,47 +1,34 @@
-- name: Install Jenkins
-  hosts: jenkins
-  become: yes
+pipeline {
+agent any
 
-  tasks:
+```
+stages {
 
-    - name: Update apt cache
-      apt:
-        update_cache: yes
+    stage('Checkout') {
+        steps {
+            git branch: 'main',
+            url: 'https://github.com/Sapana04/moneyview-devops.git'
+        }
+    }
 
-    - name: Install Java 21
-      apt:
-        name: openjdk-21-jdk
-        state: present
+    stage('Build') {
+        steps {
+            echo 'Build Started'
+        }
+    }
 
-    - name: Create keyrings directory
-      file:
-        path: /etc/apt/keyrings
-        state: directory
-        mode: '0755'
+    stage('Test') {
+        steps {
+            echo 'Testing Application'
+        }
+    }
 
-    - name: Download Jenkins GPG key
-      get_url:
-        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
-        dest: /etc/apt/keyrings/jenkins-keyring.asc
-        mode: '0644'
+    stage('Deploy') {
+        steps {
+            echo 'Deployment Started'
+        }
+    }
+}
+```
 
-    - name: Add Jenkins repository
-      apt_repository:
-        repo: "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/"
-        filename: jenkins
-        state: present
-
-    - name: Update apt cache
-      apt:
-        update_cache: yes
-
-    - name: Install Jenkins
-      apt:
-        name: jenkins
-        state: present
-
-    - name: Start Jenkins service
-      service:
-        name: jenkins
-        state: started
-        enabled: yes
+}
