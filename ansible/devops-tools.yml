@@ -1,0 +1,39 @@
+---
+- name: Install DevOps Tools
+  hosts: jenkins
+  become: yes
+
+  tasks:
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install prerequisites
+      apt:
+        name:
+          - software-properties-common
+          - unzip
+          - wget
+          - curl
+        state: present
+
+    - name: Install Ansible
+      apt:
+        name: ansible
+        state: present
+
+    - name: Download Terraform
+      unarchive:
+        src: https://releases.hashicorp.com/terraform/1.13.0/terraform_1.13.0_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: yes
+
+    - name: Verify Terraform installation
+      command: terraform version
+      register: terraform_version
+      changed_when: false
+
+    - name: Show Terraform version
+      debug:
+        var: terraform_version.stdout
