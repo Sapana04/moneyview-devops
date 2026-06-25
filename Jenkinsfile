@@ -6,8 +6,7 @@ stages {
 
     stage('Checkout') {
         steps {
-            git branch: 'main',
-            url: 'https://github.com/Sapana04/moneyview-devops.git'
+            echo 'Checkout Stage'
         }
     }
 
