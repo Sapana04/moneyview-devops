@@ -25,7 +25,8 @@ stages {
 
     stage('Deploy') {
         steps {
-            echo 'Deployment Started'
+            sh 'docker rm -f moneyview-container || true'
+        sh 'docker run -d -p 3000:3000 --name moneyview-container moneyview-app'
         }
     }
 }
