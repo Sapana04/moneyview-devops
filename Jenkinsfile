@@ -1,6 +1,7 @@
 pipeline {
 agent any
 
+```
 stages {
 
     stage('Checkout') {
@@ -9,9 +10,11 @@ stages {
         }
     }
 
-    stage('Build') {
+    stage('Docker Build') {
         steps {
-            echo 'Build Started'
+            dir('app') {
+                sh 'docker build -t moneyview-app .'
+            }
         }
     }
 
@@ -27,5 +30,6 @@ stages {
         }
     }
 }
+```
 
 }
